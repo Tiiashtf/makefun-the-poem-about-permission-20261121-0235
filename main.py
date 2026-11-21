@@ -41,6 +41,12 @@ def main() -> int:
     target = os.path.join(out_dir, "entry.txt")
     with open(target, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(text)
+    # Verify the write landed whole: read it back and compare byte for byte.
+    with open(target, "rb") as fh:
+        written = fh.read()
+    if written != text.encode("utf-8"):
+        print("entry.txt does not match the poem after writing", file=sys.stderr)
+        return 1
     return 0
 
 
